@@ -76,7 +76,7 @@ class _VacasScreenState extends State<VacasScreen> {
       elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: ListTile(
-        leading: const Icon(Icons.agriculture, color: Colors.green, size: 36),
+        leading: Image.asset('assets/icons/vaca.png', width: 36, height: 36),
         title: Text(
           vaca.nome,
           style: const TextStyle(fontWeight: FontWeight.bold),

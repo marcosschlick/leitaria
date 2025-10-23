@@ -198,4 +198,37 @@ export class VacaService {
       throw new AppError("Erro ao validar propriedade da vaca", 500);
     }
   }
+
+  // Adicione este método na classe VacaService
+
+  async getEstatisticasVaca(vacaId, usuarioId) {
+    try {
+      // Validar se a vaca pertence ao usuário
+      await this.validarVacaDoUsuario(vacaId, usuarioId);
+
+      const [litrosNoMes, mediaDiaria, ultimaOrdenha] = await Promise.all([
+        this.repository.getLitrosNoMes(vacaId),
+        this.repository.getMediaDiariaLitros(vacaId),
+        this.repository.getUltimaOrdenhaLitros(vacaId),
+      ]);
+
+      return {
+        litros_no_mes: parseFloat(litrosNoMes.toFixed(2)),
+        media_diaria_litros: parseFloat(mediaDiaria.toFixed(2)),
+        ultima_ordenha: ultimaOrdenha
+          ? {
+              quantidade_litros: parseFloat(
+                ultimaOrdenha.quantidade_litros.toFixed(2)
+              ),
+              data_ordenha: ultimaOrdenha.data_ordenha,
+            }
+          : null,
+      };
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+      throw new AppError("Erro ao obter estatísticas da vaca", 500);
+    }
+  }
 }

@@ -54,7 +54,7 @@ class _CriarVacaScreenState extends State<CriarVacaScreen> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const Icon(Icons.agriculture, size: 80, color: Colors.green),
+              Image.asset('assets/icons/vaca.png', width: 80, height: 80),
               const SizedBox(height: 16),
               const Text(
                 'Cadastrar Nova Vaca',

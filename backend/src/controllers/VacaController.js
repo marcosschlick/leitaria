@@ -147,4 +147,17 @@ export class VacaController {
       return res.status(error.statusCode || 500).json({ error: error.message });
     }
   }
+
+  async getEstatisticasVaca(req, res) {
+    try {
+      const { vacaId } = req.params;
+      const estatisticas = await this.service.getEstatisticasVaca(
+        vacaId,
+        req.user.id
+      );
+      return res.status(200).json({ estatisticas });
+    } catch (error) {
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
 }

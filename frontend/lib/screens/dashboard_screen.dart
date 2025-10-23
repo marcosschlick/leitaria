@@ -99,53 +99,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final alertas = _dashboardData['alertas'] ?? {};
     final List<Widget> widgets = [];
 
-    // Alertas de cios detectados
-    final ciosDetectados = alertas['cios_detectados'] ?? 0;
-    if (ciosDetectados > 0) {
-      widgets.add(
-        _buildAlertaCard(
-          'Cios Detectados',
-          'Há $ciosDetectados vaca(s) em cio que precisam de atenção',
-          Colors.orange,
-        ),
-      );
-      widgets.add(const SizedBox(height: 8));
-    }
-
-    // Alertas de partos próximos
-    final partosProximos = alertas['partos_proximos'] ?? 0;
-    if (partosProximos > 0) {
-      widgets.add(
-        _buildAlertaCard(
-          'Partos Próximos',
-          '$partosProximos vaca(s) estão próximas do parto',
-          Colors.purple,
-        ),
-      );
-      widgets.add(const SizedBox(height: 8));
-    }
-
     // Detalhes de cios
     final detalhesCios = alertas['detalhes_cios'] ?? [];
     for (var cio in detalhesCios) {
       widgets.add(
         _buildAlertaCard(
           'Cio Detectado',
-          '${cio['vaca_nome']} - ${cio['data_detecao']}',
+          '${cio['nome']} (Brinco: ${cio['numero_brinco']}) - Próximo ciclo em 21 dias',
           Colors.orange,
-        ),
-      );
-      widgets.add(const SizedBox(height: 8));
-    }
-
-    // Detalhes de partos
-    final detalhesPartos = alertas['detalhes_partos'] ?? [];
-    for (var parto in detalhesPartos) {
-      widgets.add(
-        _buildAlertaCard(
-          'Parto Próximo',
-          '${parto['vaca_nome']} - Previsto para ${parto['data_parto_previsto']}',
-          Colors.purple,
         ),
       );
       widgets.add(const SizedBox(height: 8));

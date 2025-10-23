@@ -39,5 +39,8 @@ router.post("/:vacaId/parto", authMiddleware, (req, res) =>
 router.post("/:vacaId/peso", authMiddleware, (req, res) =>
   vacaController.registrarPeso(req, res)
 );
+router.get("/:vacaId/estatisticas", authMiddleware, (req, res) =>
+  vacaController.getEstatisticasVaca(req, res)
+);
 
 export { router as vacaRoutes };

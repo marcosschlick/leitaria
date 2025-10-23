@@ -14,6 +14,7 @@ class ApiConfig {
   static String vacaByQrCode(String qrCode) => '$vacas/qr-code/$qrCode';
   static String vacaByBrinco(String brinco) => '$vacas/brinco/$brinco';
   static String searchVacas(String nome) => '$vacas/search?nome=$nome';
+  static String vacaEstatisticas(int vacaId) => '$vacas/$vacaId/estatisticas';
 
   // Ações das vacas
   static String registrarOrdenha(int vacaId) => '$vacas/$vacaId/ordenha';

@@ -14,7 +14,7 @@ CREATE TABLE vacas (
     numero_brinco VARCHAR(255) UNIQUE,
     nome VARCHAR(255) NOT NULL,
     data_nascimento DATE,
-    raca VARCHAR(100) NOT NULL
+    raca VARCHAR(100) NOT NULL,
     usuario_id INTEGER REFERENCES usuarios(id)
 );
 

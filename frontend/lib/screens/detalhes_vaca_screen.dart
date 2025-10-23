@@ -103,7 +103,7 @@ class _DetalhesVacaScreenState extends State<DetalhesVacaScreen> {
     }
   }
 
-  // Funções específicas para cada ação - CORRIGIDAS
+  // Funções específicas para cada ação
   Future<void> _registrarOrdenha() async {
     final quantidadeController = TextEditingController();
     final turnoController = TextEditingController();
@@ -370,253 +370,6 @@ class _DetalhesVacaScreenState extends State<DetalhesVacaScreen> {
     );
   }
 
-  Future<void> _registrarInseminacao() async {
-    final dataController = TextEditingController();
-    final touroController = TextEditingController();
-    String tipoSelecionado = 'IA';
-    final now = DateTime.now();
-    dataController.text = _formatarDataParaAPI(now);
-
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Registrar Inseminação'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                DropdownButtonFormField<String>(
-                  value: tipoSelecionado,
-                  decoration: const InputDecoration(
-                    labelText: 'Tipo',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: ['IA', 'Monta natural'].map((String tipo) {
-                    return DropdownMenuItem<String>(
-                      value: tipo,
-                      child: Text(tipo),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    tipoSelecionado = newValue!;
-                  },
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: touroController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nome do Touro (Opcional)',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: dataController,
-                  decoration: const InputDecoration(
-                    labelText: 'Data da Inseminação',
-                    border: OutlineInputBorder(),
-                  ),
-                  readOnly: true,
-                  onTap: () async {
-                    final DateTime? dataSelecionada = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now(),
-                      locale: const Locale('pt', 'BR'),
-                    );
-
-                    if (dataSelecionada != null) {
-                      dataController.text = _formatarDataParaAPI(
-                        dataSelecionada,
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final dados = {
-                  'tipo': tipoSelecionado,
-                  'data_inseminacao': dataController.text,
-                };
-
-                if (touroController.text.isNotEmpty) {
-                  dados['nome_touro'] = touroController.text;
-                }
-
-                Navigator.pop(context);
-                _registrarAcao(
-                  'Inseminação',
-                  ApiConfig.registrarInseminacao(widget.vaca.id),
-                  dados,
-                );
-              },
-              child: const Text('Registrar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _confirmarPrenhez() async {
-    final dataController = TextEditingController();
-    final now = DateTime.now();
-    dataController.text = _formatarDataParaAPI(now);
-
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Confirmar Prenhez'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: dataController,
-                  decoration: const InputDecoration(
-                    labelText: 'Data da Confirmação',
-                    border: OutlineInputBorder(),
-                  ),
-                  readOnly: true,
-                  onTap: () async {
-                    final DateTime? dataSelecionada = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now(),
-                      locale: const Locale('pt', 'BR'),
-                    );
-
-                    if (dataSelecionada != null) {
-                      dataController.text = _formatarDataParaAPI(
-                        dataSelecionada,
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final dados = {'data_inicio': dataController.text};
-
-                Navigator.pop(context);
-                _registrarAcao(
-                  'Prenhez',
-                  ApiConfig.registrarPrenhez(widget.vaca.id),
-                  dados,
-                );
-              },
-              child: const Text('Confirmar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _registrarParto() async {
-    final dataController = TextEditingController();
-    String sexoSelecionado = 'Fêmea';
-    final now = DateTime.now();
-    dataController.text = _formatarDataParaAPI(now);
-
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Registrar Parto'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: dataController,
-                  decoration: const InputDecoration(
-                    labelText: 'Data do Parto',
-                    border: OutlineInputBorder(),
-                  ),
-                  readOnly: true,
-                  onTap: () async {
-                    final DateTime? dataSelecionada = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now(),
-                      locale: const Locale('pt', 'BR'),
-                    );
-
-                    if (dataSelecionada != null) {
-                      dataController.text = _formatarDataParaAPI(
-                        dataSelecionada,
-                      );
-                    }
-                  },
-                ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  value: sexoSelecionado,
-                  decoration: const InputDecoration(
-                    labelText: 'Sexo da Cria',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: ['Fêmea', 'Macho'].map((String sexo) {
-                    return DropdownMenuItem<String>(
-                      value: sexo,
-                      child: Text(sexo),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    sexoSelecionado = newValue!;
-                  },
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final dados = {
-                  'data_parto': dataController.text,
-                  'sexo_cria': sexoSelecionado,
-                };
-
-                Navigator.pop(context);
-                _registrarAcao(
-                  'Parto',
-                  ApiConfig.registrarParto(widget.vaca.id),
-                  dados,
-                );
-              },
-              child: const Text('Registrar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Widget _buildBotaoAcao(
     String texto,
     IconData icone,
@@ -660,11 +413,7 @@ class _DetalhesVacaScreenState extends State<DetalhesVacaScreen> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    const Icon(
-                      Icons.agriculture,
-                      size: 80,
-                      color: Colors.green,
-                    ),
+                    Image.asset('assets/icons/vaca.png', width: 80, height: 80),
                     const SizedBox(height: 16),
                     Text(
                       widget.vaca.nome,
@@ -700,7 +449,7 @@ class _DetalhesVacaScreenState extends State<DetalhesVacaScreen> {
             ]),
             const SizedBox(height: 20),
 
-            // Ações Rápidas
+            // Ações Rápidas (apenas Ordenha, Cio e Peso)
             _buildInfoCard('Ações Rápidas', [
               const Text(
                 'Registrar eventos para esta vaca:',
@@ -731,31 +480,6 @@ class _DetalhesVacaScreenState extends State<DetalhesVacaScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  _buildBotaoAcao(
-                    'Inseminação',
-                    Icons.health_and_safety,
-                    Colors.pink,
-                    _registrarInseminacao,
-                  ),
-                  const SizedBox(width: 8),
-                  _buildBotaoAcao(
-                    'Prenhez',
-                    Icons.favorite,
-                    Colors.red,
-                    _confirmarPrenhez,
-                  ),
-                  const SizedBox(width: 8),
-                  _buildBotaoAcao(
-                    'Parto',
-                    Icons.emoji_people,
-                    Colors.green,
-                    _registrarParto,
-                  ),
-                ],
-              ),
               if (_carregando)
                 const Padding(
                   padding: EdgeInsets.only(top: 16.0),
@@ -764,13 +488,35 @@ class _DetalhesVacaScreenState extends State<DetalhesVacaScreen> {
             ]),
             const SizedBox(height: 20),
 
-            _buildInfoCard('Estatísticas', [
-              const Center(),
-              const SizedBox(height: 8),
-              _buildInfoItem('Produção Total', '0 Litros'),
-              _buildInfoItem('Última Ordenha', 'Não registrada'),
-              _buildInfoItem('Status Reprodutivo', 'Não informado'),
-            ]),
+            // Estatísticas
+            FutureBuilder<Map<String, dynamic>>(
+              future: _getEstatisticas(),
+              builder: (context, snapshot) {
+                String litrosNoMes = '0 L';
+                String mediaDiaria = '0 L';
+                String ultimaOrdenha = 'Não registrada';
+
+                if (snapshot.hasData) {
+                  final estatisticas = snapshot.data!['estatisticas'] ?? {};
+                  litrosNoMes =
+                      '${estatisticas['litros_no_mes']?.toStringAsFixed(1) ?? '0'} L';
+                  mediaDiaria =
+                      '${estatisticas['media_diaria_litros']?.toStringAsFixed(1) ?? '0'} L';
+
+                  final ultima = estatisticas['ultima_ordenha'];
+                  if (ultima != null) {
+                    ultimaOrdenha =
+                        '${ultima['quantidade_litros']?.toStringAsFixed(1) ?? '0'}L - ${_formatarData(ultima['data_ordenha'])}';
+                  }
+                }
+
+                return _buildInfoCard('Estatísticas de Produção', [
+                  _buildInfoItem('Litros no Mês', litrosNoMes),
+                  _buildInfoItem('Média Diária', mediaDiaria),
+                  _buildInfoItem('Última Ordenha', ultimaOrdenha),
+                ]);
+              },
+            ),
           ],
         ),
       ),
@@ -792,5 +538,17 @@ class _DetalhesVacaScreenState extends State<DetalhesVacaScreen> {
 
   String _formatarHoraParaAPI(DateTime dateTime) {
     return "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
+  }
+
+  Future<Map<String, dynamic>> _getEstatisticas() async {
+    try {
+      final resposta = await ApiService.get(
+        ApiConfig.vacaEstatisticas(widget.vaca.id),
+      );
+      return resposta;
+    } catch (e) {
+      print('Erro ao buscar estatísticas: $e');
+      return {};
+    }
   }
 }

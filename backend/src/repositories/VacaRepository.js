@@ -170,4 +170,52 @@ export class VacaRepository {
     ]);
     return new Vaca(rows[0]);
   }
+
+  async getLitrosNoMes(vacaId) {
+    const query = `
+    SELECT COALESCE(SUM(quantidade_ml), 0) as total_ml
+    FROM ordenhas 
+    WHERE vaca_id = $1 
+      AND data_ordenha >= date_trunc('month', CURRENT_DATE)
+      AND data_ordenha < date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'
+  `;
+    const { rows } = await pool.query(query, [vacaId]);
+    return parseFloat(rows[0].total_ml) / 1000;
+  }
+
+  async getMediaDiariaLitros(vacaId) {
+    const query = `
+    SELECT 
+      COALESCE(SUM(quantidade_ml), 0) as total_ml,
+      COUNT(DISTINCT data_ordenha) as dias_com_ordenha
+    FROM ordenhas 
+    WHERE vaca_id = $1 
+      AND data_ordenha >= date_trunc('month', CURRENT_DATE)
+      AND data_ordenha < date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'
+  `;
+    const { rows } = await pool.query(query, [vacaId]);
+    const totalMl = parseFloat(rows[0].total_ml);
+    const diasComOrdenha = parseInt(rows[0].dias_com_ordenha) || 1;
+
+    return totalMl / diasComOrdenha / 1000;
+  }
+
+  async getUltimaOrdenhaLitros(vacaId) {
+    const query = `
+    SELECT quantidade_ml, data_ordenha 
+    FROM ordenhas 
+    WHERE vaca_id = $1 
+    ORDER BY data_ordenha DESC, id DESC 
+    LIMIT 1
+  `;
+    const { rows } = await pool.query(query, [vacaId]);
+
+    if (rows.length > 0) {
+      return {
+        quantidade_litros: parseFloat(rows[0].quantidade_ml) / 1000,
+        data_ordenha: rows[0].data_ordenha,
+      };
+    }
+    return null;
+  }
 }
