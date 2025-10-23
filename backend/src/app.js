@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { authRoutes } from "./routes/AuthRoutes.js";
 import { dashboardRoutes } from "./routes/DashboardRoutes.js";
+import { vacaRoutes } from "./routes/VacaRoutes.js";
 
 dotenv.config();
 
@@ -20,5 +21,6 @@ app.use(express.json());
 
 app.use("/auth", authRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/vacas", vacaRoutes);
 
 export default app;

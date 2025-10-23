@@ -5,7 +5,7 @@ export class Vaca {
     qr_code,
     nome,
     data_nascimento,
-    raca_id,
+    raca,
     usuario_id,
   }) {
     this.id = id;
@@ -13,7 +13,7 @@ export class Vaca {
     this.qr_code = qr_code;
     this.nome = nome;
     this.data_nascimento = data_nascimento;
-    this.raca_id = raca_id;
+    this.raca = raca;
     this.usuario_id = usuario_id;
   }
 }

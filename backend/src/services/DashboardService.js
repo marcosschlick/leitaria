@@ -1,9 +1,9 @@
-import { VacaRepository } from "../repositories/VacaRepository.js";
+import { DashboardRepository } from "../repositories/DashboardRepository.js";
 import AppError from "../utils/AppError.js";
 
 export class DashboardService {
   constructor() {
-    this.repository = new VacaRepository();
+    this.repository = new DashboardRepository();
   }
 
   async getDashboard(usuario_id) {
