@@ -87,83 +87,107 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 40),
-            Image.asset('assets/images/vaca.png', height: 120),
-            const SizedBox(height: 16),
-            const Text(
-              'MilkFlow',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final bool isWeb = constraints.maxWidth > 600;
+          final double maxFormWidth = isWeb ? 400.0 : double.infinity;
+          final double horizontalPadding = isWeb ? 0.0 : 16.0;
+
+          return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: 16.0,
             ),
-            const SizedBox(height: 40),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                prefixIcon: Icon(Icons.email),
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _senhaController,
-              decoration: InputDecoration(
-                labelText: 'Senha',
-                prefixIcon: const Icon(Icons.lock),
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _mostrarSenha ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _mostrarSenha = !_mostrarSenha;
-                    });
-                  },
+            child: Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: maxFormWidth),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 40),
+                    Image.asset('assets/images/vaca.png', height: 120),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'MilkFlow',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    TextField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: Icon(Icons.email),
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _senhaController,
+                      decoration: InputDecoration(
+                        labelText: 'Senha',
+                        prefixIcon: const Icon(Icons.lock),
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _mostrarSenha
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _mostrarSenha = !_mostrarSenha;
+                            });
+                          },
+                        ),
+                      ),
+                      obscureText: !_mostrarSenha,
+                    ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _carregando ? null : _fazerLogin,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: _carregando
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                'Entrar',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegistroScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Não tem conta? Registre-se',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              obscureText: !_mostrarSenha,
             ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: _carregando ? null : _fazerLogin,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                ),
-                child: _carregando
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Entrar', style: TextStyle(fontSize: 16)),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RegistroScreen(),
-                  ),
-                );
-              },
-              child: const Text(
-                'Não tem conta? Registre-se',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

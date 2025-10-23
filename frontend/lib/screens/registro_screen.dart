@@ -28,130 +28,154 @@ class _RegistroScreenState extends State<RegistroScreen> {
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            const Icon(Icons.person_add, size: 80, color: Colors.green),
-            const SizedBox(height: 16),
-            const Text(
-              'Criar Nova Conta',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
-              ),
-            ),
-            const SizedBox(height: 30),
-            TextField(
-              controller: _nomeController,
-              decoration: const InputDecoration(
-                labelText: 'Nome completo',
-                prefixIcon: Icon(Icons.person),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                prefixIcon: Icon(Icons.email),
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _dataNascimentoController,
-              decoration: const InputDecoration(
-                labelText: 'Data de Nascimento (AAAA-MM-DD)',
-                prefixIcon: Icon(Icons.calendar_today),
-                border: OutlineInputBorder(),
-                hintText: '1990-01-15',
-              ),
-              readOnly: true,
-              onTap: () async {
-                final DateTime? dataSelecionada = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now().subtract(
-                    const Duration(days: 365 * 18),
-                  ),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime.now().subtract(
-                    const Duration(days: 365 * 18),
-                  ),
-                  locale: const Locale('pt', 'BR'),
-                );
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final bool isWeb = constraints.maxWidth > 600;
+          final double maxFormWidth = isWeb ? 500.0 : double.infinity;
+          final double horizontalPadding = isWeb ? 0.0 : 16.0;
 
-                if (dataSelecionada != null) {
-                  final dataFormatada =
-                      "${dataSelecionada.year}-${dataSelecionada.month.toString().padLeft(2, '0')}-${dataSelecionada.day.toString().padLeft(2, '0')}";
-                  _dataNascimentoController.text = dataFormatada;
-                }
-              },
+          return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: 16.0,
             ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _senhaController,
-              decoration: InputDecoration(
-                labelText: 'Senha',
-                prefixIcon: const Icon(Icons.lock),
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _mostrarSenha ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _mostrarSenha = !_mostrarSenha;
-                    });
-                  },
+            child: Center(
+              child: Container(
+                constraints: BoxConstraints(maxWidth: maxFormWidth),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    const Icon(Icons.person_add, size: 80, color: Colors.green),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Criar Nova Conta',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    TextField(
+                      controller: _nomeController,
+                      decoration: const InputDecoration(
+                        labelText: 'Nome completo',
+                        prefixIcon: Icon(Icons.person),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: Icon(Icons.email),
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _dataNascimentoController,
+                      decoration: const InputDecoration(
+                        labelText: 'Data de Nascimento (AAAA-MM-DD)',
+                        prefixIcon: Icon(Icons.calendar_today),
+                        border: OutlineInputBorder(),
+                        hintText: '1990-01-15',
+                      ),
+                      readOnly: true,
+                      onTap: () async {
+                        final DateTime? dataSelecionada = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now().subtract(
+                            const Duration(days: 365 * 18),
+                          ),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now().subtract(
+                            const Duration(days: 365 * 18),
+                          ),
+                          locale: const Locale('pt', 'BR'),
+                        );
+
+                        if (dataSelecionada != null) {
+                          final dataFormatada =
+                              "${dataSelecionada.year}-${dataSelecionada.month.toString().padLeft(2, '0')}-${dataSelecionada.day.toString().padLeft(2, '0')}";
+                          _dataNascimentoController.text = dataFormatada;
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _senhaController,
+                      decoration: InputDecoration(
+                        labelText: 'Senha',
+                        prefixIcon: const Icon(Icons.lock),
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _mostrarSenha
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _mostrarSenha = !_mostrarSenha;
+                            });
+                          },
+                        ),
+                      ),
+                      obscureText: !_mostrarSenha,
+                    ),
+                    const SizedBox(height: 20),
+                    TextField(
+                      controller: _confirmarSenhaController,
+                      decoration: InputDecoration(
+                        labelText: 'Confirmar Senha',
+                        prefixIcon: const Icon(Icons.lock_outline),
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _mostrarConfirmarSenha
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _mostrarConfirmarSenha = !_mostrarConfirmarSenha;
+                            });
+                          },
+                        ),
+                      ),
+                      obscureText: !_mostrarConfirmarSenha,
+                    ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _carregando ? null : _registrarUsuario,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                        ),
+                        child: _carregando
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                'Registrar',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
-              obscureText: !_mostrarSenha,
             ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _confirmarSenhaController,
-              decoration: InputDecoration(
-                labelText: 'Confirmar Senha',
-                prefixIcon: const Icon(Icons.lock_outline),
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _mostrarConfirmarSenha
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _mostrarConfirmarSenha = !_mostrarConfirmarSenha;
-                    });
-                  },
-                ),
-              ),
-              obscureText: !_mostrarConfirmarSenha,
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: _carregando ? null : _registrarUsuario,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                ),
-                child: _carregando
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Registrar', style: TextStyle(fontSize: 16)),
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -193,10 +217,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
         senha: _senhaController.text,
       );
 
-      final resposta = await ApiService.post(
-        ApiConfig.register,
-        novoUsuario.toJson(),
-      );
+      await ApiService.post(ApiConfig.register, novoUsuario.toJson());
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
