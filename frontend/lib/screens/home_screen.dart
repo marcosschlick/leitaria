@@ -34,7 +34,10 @@ class HomeScreen extends StatelessWidget {
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.dashboard), text: 'Dashboard'),
-              Tab(icon: Icon(Icons.agriculture), text: 'Vacas'),
+              Tab(
+                icon: ImageIcon(AssetImage('assets/images/vaca.png'), size: 24),
+                text: 'Vacas',
+              ),
             ],
           ),
         ),
