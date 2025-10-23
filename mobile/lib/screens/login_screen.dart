@@ -92,10 +92,10 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
             const SizedBox(height: 40),
-            const Icon(Icons.agriculture, size: 100, color: Colors.green),
+            Image.asset('assets/images/vaca.png', height: 120),
             const SizedBox(height: 16),
             const Text(
-              'Sistema de Leitaria',
+              'MilkFlow',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,

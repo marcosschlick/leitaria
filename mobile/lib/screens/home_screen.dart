@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sistema de Leitaria'),
+        title: const Text('MilkFlow'),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         actions: [

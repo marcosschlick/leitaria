@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Sistema de Leitaria',
+      title: 'MilkFlow',
       theme: ThemeData(primarySwatch: Colors.green, useMaterial3: true),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

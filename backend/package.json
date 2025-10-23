@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "milk-flow",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -7,9 +7,17 @@
     "dev": "node --watch src/server.js",
     "start": "node src/server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcosschlick/milk-flow.git"
+  },
   "author": "",
   "license": "ISC",
-  "description": "",
+  "bugs": {
+    "url": "https://github.com/marcosschlick/milk-flow/issues"
+  },
+  "homepage": "https://github.com/marcosschlick/milk-flow#readme",
+  "description": "Gestão inteligente do rebanho à ordenha.",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
