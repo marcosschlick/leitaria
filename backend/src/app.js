@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { authRoutes } from "./routes/AuthRoutes.js";
+import { dashboardRoutes } from "./routes/DashboardRoutes.js";
 
 dotenv.config();
 
@@ -18,5 +19,6 @@ app.use(
 app.use(express.json());
 
 app.use("/auth", authRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 export default app;
